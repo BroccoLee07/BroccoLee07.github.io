@@ -1,0 +1,25 @@
+Text that appears outside of the <quest></quest> tags will not display anywhere and can be used for notes if required.
+
+// <quest id:Name of Quest|difficulty|catId>
+// OBJECTIVES separated by commas (leave this blank to not use objectives for a quest)
+// RESOLUTIONS separated by commas use | for line breaks (leave this blank if not using resolutions for a quest)
+// quest description
+// quest description
+// quest description
+// </quest>
+
+<quest 1:I need my wood axe!|5|0>
+Get wood axe in the forest,Bring wood axe to Brian
+
+Requester: Brian of Pillarwood
+
+I was chopping some dead trees in 
+the forest when I suddenly heard 
+a howl. I saw a big shadow so I 
+bolted right away and left my axe.
+Please bring it back!
+</quest>
+
+<quest 2:Test side quest|1|1>
+Test side quest.
+</quest>

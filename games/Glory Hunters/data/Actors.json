@@ -1,0 +1,7 @@
+[
+null,
+{"id":1,"battlerName":"Derik Harrenhal","characterIndex":0,"characterName":"Derik Harrenhal","classId":5,"equips":[0,0,0,3,0],"faceIndex":0,"faceName":"Derik Harrenhal","traits":[{"code":31,"dataId":1,"value":1},{"code":41,"dataId":2,"value":1}],"initialLevel":1,"maxLevel":99,"name":"Derik Harrenhal","nickname":"Derik","note":"<level up event: 1>","profile":""},
+{"id":2,"battlerName":"Stan Talberon","characterIndex":2,"characterName":"Stan Talberon","classId":6,"equips":[0,0,0,0,0],"faceIndex":2,"faceName":"Stan Talberon","traits":[],"initialLevel":1,"maxLevel":99,"name":"Stan Talberon","nickname":"Stan","note":"","profile":""},
+{"id":3,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":99,"name":"","nickname":"","note":"","profile":""},
+{"id":4,"battlerName":"","characterIndex":0,"characterName":"","classId":1,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":99,"name":"","nickname":"","note":"","profile":""}
+]
