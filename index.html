@@ -412,9 +412,9 @@ Have fun creating your portfolio on this template!!! -->
             </div>
           </article>
 
-          <article class="row" style="grid-template-columns: 1fr; margin-bottom: 8rem;">
+          <article class="row" style="grid-template-columns: 1fr; margin-bottom: 3rem;">
             <div class="professional-image-grid">
-              <div class="project-wrapper__image">
+              <div class="professional-work-image">
                 <div class="thumbnail rounded">
                   <img
                     src="./assets/Professional Work - 1.png"
@@ -426,7 +426,7 @@ Have fun creating your portfolio on this template!!! -->
                 </div>
               </div>
 
-              <div class="project-wrapper__image">
+              <div class="professional-work-image">
                 <div class="thumbnail rounded">
                   <img
                     src="./assets/Professional Work - 2.png"
@@ -567,13 +567,33 @@ Have fun creating your portfolio on this template!!! -->
 
         .professional-image-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 2rem;
+          grid-template-columns: 1fr;
+          gap: 3rem;
           align-items: start;
+          justify-items: center;
         }
 
-        .professional-image-grid .project-wrapper__image {
+        #projects .professional-image-grid .professional-work-image {
           width: 100%;
+          max-width: 900px;
+          margin: 0;
+        }
+
+        #projects .professional-image-grid .professional-work-image .thumbnail .img-fluid {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+
+        .local-reveal {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+          transition: opacity 700ms ease, transform 700ms ease;
+        }
+
+        .local-reveal.is-visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
         }
 
         .image-viewer {
@@ -623,6 +643,20 @@ Have fun creating your portfolio on this template!!! -->
         }
       `;
       document.head.appendChild(imageViewerStyles);
+
+      const localRevealTargets = document.querySelectorAll(".professional-work-image, .music-section");
+      localRevealTargets.forEach((target) => target.classList.add("local-reveal"));
+
+      const localRevealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            localRevealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      localRevealTargets.forEach((target) => localRevealObserver.observe(target));
 
       const imageViewer = document.createElement("div");
       imageViewer.className = "image-viewer";
@@ -676,7 +710,7 @@ Have fun creating your portfolio on this template!!! -->
         setViewerScale(1);
       }
 
-      document.querySelectorAll(".project-wrapper__image img").forEach((image) => {
+      document.querySelectorAll(".project-wrapper__image img, .professional-work-image img").forEach((image) => {
         image.addEventListener("click", () => {
           viewerImage.src = image.currentSrc || image.src;
           viewerImage.alt = image.alt;

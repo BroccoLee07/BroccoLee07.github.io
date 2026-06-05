@@ -62,6 +62,13 @@ ScrollReveal().reveal(".project-wrapper__image", {
   origin: window.innerWidth > 768 ? "right" : "bottom",
 });
 
+ScrollReveal().reveal(".professional-work-image, .music-section", {
+  ...defaultProps,
+  delay: 600,
+  scale: 0.9,
+  origin: window.innerWidth > 768 ? "right" : "bottom",
+});
+
 /* Contact Section */
 ScrollReveal().reveal(".contact-wrapper", {
   ...defaultProps,
