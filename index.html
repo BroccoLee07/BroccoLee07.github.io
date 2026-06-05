@@ -363,17 +363,15 @@ Have fun creating your portfolio on this template!!! -->
             </div>
 
             <div class="project-wrapper__image">
-              <a href="https://github.com/BroccoLee07/smart-job-scraper" target="_blank" rel="noopener noreferrer">
-                <div class="thumbnail rounded">
-                  <img
-                    src="./assets/Smart Job Scraper screenshot.png"
-                    class="img-fluid"
-                    alt="Smart Job Scraper dashboard project image"
-                    width="1366"
-                    height="767"
-                  />
-                </div>
-              </a>
+              <div class="thumbnail rounded">
+                <img
+                  src="./assets/Smart Job Scraper screenshot.png"
+                  class="img-fluid"
+                  alt="Smart Job Scraper dashboard project image"
+                  width="1366"
+                  height="767"
+                />
+              </div>
             </div>
           </article>
           <!-- /END Project -->
@@ -414,30 +412,30 @@ Have fun creating your portfolio on this template!!! -->
             </div>
           </article>
 
-          <article class="row" style="grid-template-columns: 1fr;">
-            <div class="project-wrapper__image" style="width: 100%;">
-              <div class="thumbnail rounded">
-                <img
-                  src="./assets/Professional Work - 1.png"
-                  class="img-fluid"
-                  alt="Swiftpos and Floramis professional experience"
-                  width="750"
-                  height="495"
-                />
+          <article class="row" style="grid-template-columns: 1fr; margin-bottom: 8rem;">
+            <div class="professional-image-grid">
+              <div class="project-wrapper__image">
+                <div class="thumbnail rounded">
+                  <img
+                    src="./assets/Professional Work - 1.png"
+                    class="img-fluid"
+                    alt="Swiftpos and Floramis professional experience"
+                    width="750"
+                    height="495"
+                  />
+                </div>
               </div>
-            </div>
-          </article>
 
-          <article class="row" style="grid-template-columns: 1fr;">
-            <div class="project-wrapper__image" style="width: 100%;">
-              <div class="thumbnail rounded">
-                <img
-                  src="./assets/Professional Work - 2.png"
-                  class="img-fluid"
-                  alt="Accenture and AWS Philippines professional experience"
-                  width="768"
-                  height="449"
-                />
+              <div class="project-wrapper__image">
+                <div class="thumbnail rounded">
+                  <img
+                    src="./assets/Professional Work - 2.png"
+                    class="img-fluid"
+                    alt="Accenture and AWS Philippines professional experience"
+                    width="768"
+                    height="449"
+                  />
+                </div>
               </div>
             </div>
           </article>
@@ -559,6 +557,188 @@ Have fun creating your portfolio on this template!!! -->
 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear()
+    </script>
+    <script>
+      const imageViewerStyles = document.createElement("style");
+      imageViewerStyles.textContent = `
+        .project-wrapper__image img {
+          cursor: zoom-in;
+        }
+
+        .professional-image-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 2rem;
+          align-items: start;
+        }
+
+        .professional-image-grid .project-wrapper__image {
+          width: 100%;
+        }
+
+        .image-viewer {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          display: none;
+          align-items: center;
+          justify-content: center;
+          background: rgba(15, 23, 42, 0.82);
+          padding: 2rem;
+        }
+
+        .image-viewer.is-open {
+          display: flex;
+        }
+
+        .image-viewer img {
+          max-width: 92vw;
+          max-height: 88vh;
+          transform: translate(var(--image-pan-x, 0px), var(--image-pan-y, 0px)) scale(var(--image-scale, 1));
+          transform-origin: center;
+          cursor: zoom-in;
+          user-select: none;
+          box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.35);
+        }
+
+        .image-viewer__close {
+          position: fixed;
+          top: 1.6rem;
+          right: 1.6rem;
+          width: 4.4rem;
+          height: 4.4rem;
+          border: 0;
+          border-radius: 50%;
+          background: #f2f2f2;
+          color: #333;
+          font-size: 3rem;
+          line-height: 1;
+          cursor: pointer;
+        }
+
+        @media(max-width: 56.25em) {
+          .professional-image-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `;
+      document.head.appendChild(imageViewerStyles);
+
+      const imageViewer = document.createElement("div");
+      imageViewer.className = "image-viewer";
+      imageViewer.innerHTML = `
+        <button class="image-viewer__close" type="button" aria-label="Close image preview">&times;</button>
+        <img alt="" />
+      `;
+      document.body.appendChild(imageViewer);
+
+      const viewerImage = imageViewer.querySelector("img");
+      const viewerClose = imageViewer.querySelector(".image-viewer__close");
+      let viewerScale = 1;
+      let viewerPanX = 0;
+      let viewerPanY = 0;
+      let isViewerDragging = false;
+      let viewerDragMoved = false;
+      let viewerDragStartX = 0;
+      let viewerDragStartY = 0;
+      let viewerDragBaseX = 0;
+      let viewerDragBaseY = 0;
+
+      function applyViewerTransform() {
+        viewerImage.style.setProperty("--image-scale", viewerScale);
+        viewerImage.style.setProperty("--image-pan-x", `${viewerPanX}px`);
+        viewerImage.style.setProperty("--image-pan-y", `${viewerPanY}px`);
+        viewerImage.style.cursor = viewerScale > 1 ? "grab" : "zoom-in";
+      }
+
+      function setViewerScale(nextScale, event) {
+        viewerScale = nextScale;
+        viewerImage.style.transition = "transform 120ms ease";
+        if (viewerScale > 1 && event) {
+          const rect = viewerImage.getBoundingClientRect();
+          const originX = ((event.clientX - rect.left) / rect.width) * 100;
+          const originY = ((event.clientY - rect.top) / rect.height) * 100;
+          viewerImage.style.transformOrigin = `${originX}% ${originY}%`;
+          viewerPanX = 0;
+          viewerPanY = 0;
+        } else if (viewerScale === 1) {
+          viewerImage.style.transformOrigin = "center";
+          viewerPanX = 0;
+          viewerPanY = 0;
+        }
+        applyViewerTransform();
+      }
+
+      function closeImageViewer() {
+        imageViewer.classList.remove("is-open");
+        viewerImage.removeAttribute("src");
+        viewerImage.style.transition = "";
+        setViewerScale(1);
+      }
+
+      document.querySelectorAll(".project-wrapper__image img").forEach((image) => {
+        image.addEventListener("click", () => {
+          viewerImage.src = image.currentSrc || image.src;
+          viewerImage.alt = image.alt;
+          setViewerScale(1);
+          imageViewer.classList.add("is-open");
+        });
+      });
+
+      viewerImage.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (viewerDragMoved) {
+          viewerDragMoved = false;
+          return;
+        }
+        setViewerScale(viewerScale > 1 ? 1 : 1.8, event);
+      });
+
+      viewerImage.addEventListener("mousedown", (event) => {
+        if (viewerScale === 1) return;
+        event.preventDefault();
+        isViewerDragging = true;
+        viewerDragMoved = false;
+        viewerImage.style.transition = "none";
+        viewerDragStartX = event.clientX;
+        viewerDragStartY = event.clientY;
+        viewerDragBaseX = viewerPanX;
+        viewerDragBaseY = viewerPanY;
+        viewerImage.style.cursor = "grabbing";
+      });
+
+      document.addEventListener("mousemove", (event) => {
+        if (!isViewerDragging) return;
+        const deltaX = event.clientX - viewerDragStartX;
+        const deltaY = event.clientY - viewerDragStartY;
+        if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+          viewerDragMoved = true;
+        }
+        viewerPanX = viewerDragBaseX + deltaX;
+        viewerPanY = viewerDragBaseY + deltaY;
+        applyViewerTransform();
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (!isViewerDragging) return;
+        isViewerDragging = false;
+        viewerImage.style.transition = "";
+        viewerImage.style.cursor = viewerScale > 1 ? "grab" : "zoom-in";
+      });
+
+      imageViewer.addEventListener("click", (event) => {
+        if (event.target !== viewerImage && event.target !== viewerClose) {
+          closeImageViewer();
+        }
+      });
+
+      viewerClose.addEventListener("click", closeImageViewer);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && imageViewer.classList.contains("is-open")) {
+          closeImageViewer();
+        }
+      });
     </script>
     <script src="./javascript/vanilla-tilt.min.js"></script>
     <script type="text/javascript" src="./javascript/valtilt.js"></script>
